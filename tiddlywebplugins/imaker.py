@@ -47,7 +47,6 @@ def spawn(instance_path, init_config, instance_module):
     from tiddlyweb.config import config
     merge_config(config, init_config)
 
-    package_name = instance_module.__name__.rsplit(".", 1)[0]
     instance = Instance(instance_path, config, instance_module.instance_config)
     instance.spawn(instance_module.store_structure)
     instance.update_store()
@@ -65,8 +64,8 @@ class Instance(object):
         init_config: a TiddlyWeb configuration dictionary used when creating
         the instance
 
-        instance_config: is an optional dictionary with configuration values for
-        the default tiddlywebconfig.py (usually referencing init_config in
+        instance_config: is an optional dictionary with configuration values
+        for the default tiddlywebconfig.py (usually referencing init_config in
         system_plugins and twanager_plugins)
 
         Note that init_config may contain an entry "instance_config_head" whose
@@ -82,11 +81,11 @@ class Instance(object):
         """
         cwd = os.getcwd()
         os.mkdir(self.root)
-        os.chdir(self.root) # XXX: side-effects
+        os.chdir(self.root)
 
         self._write_config()
 
-        if store_structure: # XXX: also prevents instance_tiddlers bag creation
+        if store_structure:
             self._init_store(store_structure)
         os.chdir(cwd)
 
@@ -95,7 +94,7 @@ class Instance(object):
         prepopulates/updates store contents by (re)importing instance_tiddlers
         """
         cwd = os.getcwd()
-        os.chdir(self.root) # XXX: side-effects
+        os.chdir(self.root)
 
         store = get_store(self.init_config)
         for package_name in self.init_config['instance_pkgstores']:
@@ -124,7 +123,7 @@ class Instance(object):
             store.put(bag)
 
         recipes = struct.get("recipes", {})
-        for name, data in recipes.items(): # TODO: DRY
+        for name, data in recipes.items():  # TODO: DRY
             desc = data.get("desc")
             recipe = Recipe(name, desc=desc)
             recipe.set_recipe(data["recipe"])
@@ -143,7 +142,7 @@ class Instance(object):
                 user.add_role(role)
             store.put(user)
 
-    def _write_config(self, defaults=None):
+    def _write_config(self):
         """
         creates a default tiddlywebconfig.py in the working directory
 
@@ -151,7 +150,7 @@ class Instance(object):
         from init_config
         """
         intro = "%s\n%s\n%s" % ("# A basic configuration.",
-            '# Run "pydoc tiddlyweb.config" for details on configuration items.',
+            '# `pydoc tiddlyweb.config` for details on configuration items.',
             self.init_config.get("instance_config_head", ""))
 
         config = {
@@ -160,9 +159,9 @@ class Instance(object):
         config.update(self.instance_config or {})
 
         config_string = "config = %s\n" % _pretty_format(config)
-        f = open(CONFIG_NAME, "w")
-        f.write("%s\n%s" % (intro, config_string))
-        f.close()
+        config_file = open(CONFIG_NAME, "w")
+        config_file.write("%s\n%s" % (intro, config_string))
+        config_file.close()
 
 
 def _set_policy(entity, constraints):
