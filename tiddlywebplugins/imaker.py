@@ -99,7 +99,8 @@ class Instance(object):
         store = get_store(self.init_config)
         for package_name in self.init_config['instance_pkgstores']:
             source_store = Store('tiddlywebplugins.pkgstore',
-                    {'package': package_name, 'read_only': True}, {})
+                    {'package': package_name, 'read_only': True},
+                    {'tiddlyweb.config': self.init_config})
             for bag in source_store.list_bags():
                 for tiddler in source_store.list_bag_tiddlers(bag):
                     tiddler = source_store.get(tiddler)
