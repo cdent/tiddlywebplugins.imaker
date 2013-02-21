@@ -21,7 +21,7 @@ from tiddlyweb.util import sha
 from tiddlywebplugins.utils import get_store
 
 
-__version__ = '0.1.1'
+__version__ = '0.1.2'
 CONFIG_NAME = 'tiddlywebconfig.py'
 
 
@@ -31,7 +31,7 @@ def init(config):
     """
 
     @make_command()
-    def udpate(args):
+    def update(args):
         """Update the default tiddlers for this instance."""
         instance = Instance('.', config)
         instance.update_store()
