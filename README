@@ -1,4 +1,4 @@
-tiddlywebplugins.imaker is a tool to help create new instance.
+tiddlywebplugins.imaker is a tool to help create new instances.
 
 In TiddlyWeb, an instance is a particular store + configuration
 which serves up a set of content and features.
@@ -6,6 +6,6 @@ which serves up a set of content and features.
 imaker works to ensure that created instances have the expected
 initial configuration and initial bags, recipes, users and tiddlers.
 
-ibuilder replaces the installation half of the functionality 
+imaker replaces the installation half of the functionality 
 provided by tiddlywebplugins.instancer. See tiddlywebplugins.ibuilder
-for the other half.
+for the development half.
