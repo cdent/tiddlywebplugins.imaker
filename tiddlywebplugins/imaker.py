@@ -139,7 +139,7 @@ class Instance(object):
             password = data.get("_password")
             if password:
                 user.set_password(password)
-            for role in data.get("roles"):
+            for role in data.get("roles", []):
                 user.add_role(role)
             store.put(user)
 
