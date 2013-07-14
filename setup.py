@@ -2,7 +2,7 @@ AUTHOR = 'Chris Dent'
 AUTHOR_EMAIL = 'cdent@peermore.com'
 NAME = 'tiddlywebplugins.imaker'
 DESCRIPTION = 'Make TiddlyWeb instances'
-VERSION = '0.1.3'
+VERSION = '0.1.4'
 
 
 import os
@@ -25,6 +25,9 @@ setup(
     install_requires = ['tiddlyweb',
         'tiddlywebplugins.utils',
         'tiddlywebplugins.pkgstore',
-        ],
+    ],
+    extras_require = {
+        'testing': ['pytest'],
+    },
     zip_safe = False
 )
