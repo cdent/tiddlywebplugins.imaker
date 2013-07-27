@@ -97,7 +97,7 @@ class Instance(object):
         os.chdir(self.root)
 
         store = get_store(self.init_config)
-        for package_name in self.init_config['instance_pkgstores']:
+        for package_name in self.init_config.get('instance_pkgstores', []):
             source_store = Store('tiddlywebplugins.pkgstore',
                     {'package': package_name, 'read_only': True},
                     {'tiddlyweb.config': self.init_config})
