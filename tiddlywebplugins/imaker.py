@@ -47,8 +47,10 @@ def spawn(instance_path, init_config, instance_module):
     from tiddlyweb.config import config
     merge_config(config, init_config)
 
+    store_structure = getattr(instance_module, 'store_structure', {})
+
     instance = Instance(instance_path, config, instance_module.instance_config)
-    instance.spawn(instance_module.store_structure)
+    instance.spawn(store_structure)
     instance.update_store()
 
 

@@ -11,6 +11,11 @@ from testpackage import instance as instance_module
 from testpackage.config import config as init_config
 
 
+class DummyInstanceModule:
+
+    instance_config = {}
+
+
 def setup_function(fn):
     try:
         shutil.rmtree('testinstance')
@@ -26,6 +31,16 @@ def test_spawn_without_pgkstore():
 
     assert os.path.exists('testinstance/tiddlywebconfig.py')
     assert not os.path.exists('testinstance/store/bags/testbag/tiddlers/testtiddler')
+
+
+def test_spawn_without_store_structure():
+    # NB: `instance_pkgstores` only sensible if `store_structure` exists
+    empty_config = {}
+    spawn('testinstance', empty_config, DummyInstanceModule())
+
+    assert os.path.exists('testinstance/tiddlywebconfig.py')
+    assert os.path.exists('testinstance/store/bags')
+    assert len(os.listdir('testinstance/store/bags')) == 0
 
 
 def test_spawn():
