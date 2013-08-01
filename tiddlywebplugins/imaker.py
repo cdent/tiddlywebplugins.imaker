@@ -47,8 +47,10 @@ def spawn(instance_path, init_config, instance_module):
     from tiddlyweb.config import config
     merge_config(config, init_config)
 
+    store_structure = getattr(instance_module, 'store_structure', {})
+
     instance = Instance(instance_path, config, instance_module.instance_config)
-    instance.spawn(instance_module.store_structure)
+    instance.spawn(store_structure)
     instance.update_store()
 
 
@@ -97,7 +99,7 @@ class Instance(object):
         os.chdir(self.root)
 
         store = get_store(self.init_config)
-        for package_name in self.init_config['instance_pkgstores']:
+        for package_name in self.init_config.get('instance_pkgstores', []):
             source_store = Store('tiddlywebplugins.pkgstore',
                     {'package': package_name, 'read_only': True},
                     {'tiddlyweb.config': self.init_config})
@@ -115,31 +117,31 @@ class Instance(object):
         """
         store = get_store(self.init_config)
 
-        bags = struct.get("bags", {})
+        bags = struct.get('bags', {})
         for name, data in bags.items():
-            desc = data.get("desc")
+            desc = data.get('desc')
             bag = Bag(name, desc=desc)
-            constraints = data.get("policy", {})
+            constraints = data.get('policy', {})
             _set_policy(bag, constraints)
             store.put(bag)
 
-        recipes = struct.get("recipes", {})
+        recipes = struct.get('recipes', {})
         for name, data in recipes.items():  # TODO: DRY
-            desc = data.get("desc")
+            desc = data.get('desc')
             recipe = Recipe(name, desc=desc)
-            recipe.set_recipe(data["recipe"])
-            constraints = data.get("policy", {})
+            recipe.set_recipe(data['recipe'])
+            constraints = data.get('policy', {})
             _set_policy(recipe, constraints)
             store.put(recipe)
 
-        users = struct.get("users", {})
+        users = struct.get('users', {})
         for name, data in users.items():
-            note = data.get("note")
+            note = data.get('note')
             user = User(name, note=note)
-            password = data.get("_password")
+            password = data.get('_password')
             if password:
                 user.set_password(password)
-            for role in data.get("roles", []):
+            for role in data.get('roles', []):
                 user.add_role(role)
             store.put(user)
 
@@ -150,18 +152,18 @@ class Instance(object):
         uses values from instance_config plus optional instance_config_head
         from init_config
         """
-        intro = "%s\n%s\n%s" % ("# A basic configuration.",
+        intro = '%s\n%s\n%s' % ('# A basic configuration.',
             '# `pydoc tiddlyweb.config` for details on configuration items.',
-            self.init_config.get("instance_config_head", ""))
+            self.init_config.get('instance_config_head', ''))
 
         config = {
-            "secret": _generate_secret()
+            'secret': _generate_secret()
         }
         config.update(self.instance_config or {})
 
-        config_string = "config = %s\n" % _pretty_format(config)
-        config_file = open(CONFIG_NAME, "w")
-        config_file.write("%s\n%s" % (intro, config_string))
+        config_string = 'config = %s\n' % _pretty_format(config)
+        config_file = open(CONFIG_NAME, 'w')
+        config_file.write('%s\n%s' % (intro, config_string))
         config_file.close()
 
 
@@ -183,7 +185,7 @@ def _generate_secret():
     """
     digest = sha(str(time()))
     digest.update(str(random()))
-    digest.update("lorem foo ipsum")
+    digest.update('lorem foo ipsum')
     return digest.hexdigest()
 
 
@@ -192,11 +194,11 @@ def _pretty_format(dic):
     generate an indented string representation of a dictionary
     """
     def escape_strings(value):
-        if hasattr(value, "join"):
+        if hasattr(value, 'join'):
             return "'%s'" % value
-        elif hasattr(value, "keys"):
+        elif hasattr(value, 'keys'):
             return pformat(value)
         else:
             return value
     lines = ("    '%s': %s" % (k, escape_strings(v)) for k, v in dic.items())
-    return "{\n%s,\n}" % ",\n".join(lines)
+    return '{\n%s,\n}' % ',\n'.join(lines)
