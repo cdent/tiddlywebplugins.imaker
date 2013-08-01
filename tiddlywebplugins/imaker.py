@@ -1,7 +1,8 @@
 """
 A collection of tools and functions for creating instances
-from tiddlywebplugins packages hosting pre-determined
-tiddlers, bags, and recipes.
+from tiddlywebplugins packages providing an initial config
+and optionally hosting pre-determined tiddlers, bags, and
+recipes.
 """
 
 import os
@@ -21,7 +22,7 @@ from tiddlyweb.util import sha
 from tiddlywebplugins.utils import get_store
 
 
-__version__ = '0.1.3'
+__version__ = '0.1.4'
 CONFIG_NAME = 'tiddlywebconfig.py'
 
 
@@ -93,7 +94,8 @@ class Instance(object):
 
     def update_store(self):
         """
-        prepopulates/updates store contents by (re)importing instance_tiddlers
+        prepopulates/updates store contents by (re)importing tiddlers from
+        any configured instance_pkgstores.
         """
         cwd = os.getcwd()
         os.chdir(self.root)

@@ -4,7 +4,8 @@ In TiddlyWeb, an instance is a particular store + configuration
 which serves up a set of content and features.
 
 imaker works to ensure that created instances have the expected
-initial configuration and initial bags, recipes, users and tiddlers.
+initial configuration and (optionally) initial bags, recipes, users
+and tiddlers.
 
 imaker replaces the installation half of the functionality 
 provided by tiddlywebplugins.instancer. See tiddlywebplugins.ibuilder

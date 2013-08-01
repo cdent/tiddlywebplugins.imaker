@@ -2,7 +2,7 @@ AUTHOR = 'Chris Dent'
 AUTHOR_EMAIL = 'cdent@peermore.com'
 NAME = 'tiddlywebplugins.imaker'
 DESCRIPTION = 'Make TiddlyWeb instances'
-VERSION = '0.1.4'
+VERSION = '0.1.5'
 
 
 import os
