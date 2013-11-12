@@ -186,8 +186,8 @@ def _generate_secret():
     This is used for message authentication.
     """
     digest = sha(str(time()))
-    digest.update(str(random()))
-    digest.update('lorem foo ipsum')
+    digest.update(str(random()).encode('UTF-8'))
+    digest.update('lorem foo ipsum'.encode('UTF-8'))
     return digest.hexdigest()
 
 
